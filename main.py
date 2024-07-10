@@ -54,12 +54,13 @@ def get_products(db: Session = Depends(get_db), page: int = 0, limit: int = 10):
 def get_products_by_category(db: Session = Depends(get_db), category_id: int=1, page: int=0, limit: int=10):
     try:
         products = crud.get_products_by_category(db, category_id, page, limit)
+        total_amount = crud.get_total_products_count_by_category(db,category_id)
         product_models = [schemas.ProductModel(id=product.id, name=product.name, price=product.price, discount=product.discount, url_image=product.url_image, category_id=product.category_id) for product in products]
 
         return {
             "page": page,
             "limit": limit,
-            "total_amount": len(products),
+            "total_amount": total_amount,
             "records": product_models
         }
     except Exception as e:
@@ -79,11 +80,12 @@ def get_categories(db: Session = Depends(get_db)):
 def get_product_by_name(name: str, db: Session = Depends(get_db), page: int = 0, limit: int = 10):
     try: 
         products = crud.get_product_by_name(db, name, page, limit)
+        total_amount = crud.get_total_products_count_by_name(db, name)
         products_model = [schemas.ProductModel(id=product.id, name=product.name, price=product.price, discount=product.discount, url_image=product.url_image, category_id=product.category_id) for product in products]
         return {
             "page": page,
             "limit": limit,
-            "total_amount": len(products),
+            "total_amount": total_amount,
             "records": products_model
         }
     except Exception as e:
