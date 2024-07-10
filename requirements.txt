@@ -3,3 +3,4 @@ requests
 SQLAlchemy
 pydantic
 python-dotenv
+uvicorn
