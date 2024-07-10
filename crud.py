@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from sqlalchemy import text
-from . import models
+from backend import models
 import time
 import requests
-from . import config
+from backend import config
 
 def get_products_by_pages(db: Session, page: int, limit:int):
     if(page<=0):

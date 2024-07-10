@@ -1,10 +1,10 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from backend import database
 
 
-class Product(Base):
+class Product(database.Base):
     __tablename__ = "product"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -15,7 +15,7 @@ class Product(Base):
     category_id = Column(Integer, ForeignKey("category.id"), name="category")
     category = relationship("Category", back_populates="products")
 
-class Category(Base):
+class Category(database.Base):
     __tablename__ = "category"
 
     id = Column(Integer, primary_key=True, autoincrement=True)

@@ -1,14 +1,13 @@
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from . import crud,models,schemas
-from .database import SessionLocal, engine
+from backend import crud,models,schemas,database
 from typing import List
 import threading
 from fastapi.responses import JSONResponse
 
 
-models.Base.metadata.create_all(bind=engine)
+models.database.Base.metadata.create_all(bind=database.engine)
 
 
 app = FastAPI()
@@ -23,7 +22,7 @@ app.add_middleware(
 )
 # Dependency
 def get_db():
-    db = SessionLocal()
+    db = database.SessionLocal()
     try:
         yield db
     finally:
