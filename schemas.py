@@ -30,3 +30,6 @@ class ProductResponseModel(BaseModel):
 
     class Config:
         orm_mode = True
+
+class ErrorResponseModel(BaseModel):
+    error: str

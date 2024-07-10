@@ -5,20 +5,18 @@ from . import crud,models,schemas
 from .database import SessionLocal, engine
 from typing import List
 import threading
-
+from fastapi.responses import JSONResponse
 
 
 models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
-origins = [
-    "*"
-]
+
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,7 +46,7 @@ def get_products(db: Session = Depends(get_db), page: int = 0, limit: int = 10):
         }
     except Exception as e:
         print(f"Error fetching products: {e}")
-        return {"error": "Error fetching products"}
+        return JSONResponse(status_code=500, content={"error": "Error fetching products"})
 
 @app.get("/products_category/{category_id}", response_model=schemas.ProductResponseModel)
 def get_products_by_category(db: Session = Depends(get_db), category_id: int=1, page: int=0, limit: int=10):
@@ -65,7 +63,7 @@ def get_products_by_category(db: Session = Depends(get_db), category_id: int=1, 
         }
     except Exception as e:
         print(f"Error fetching products: {e}")
-        return {"error": "Error fetching products"}
+        return JSONResponse(status_code=500, content={"error": "Error fetching products"})
 
 @app.get("/categories/", response_model=List[schemas.CategoryModel])
 def get_categories(db: Session = Depends(get_db)):
@@ -90,7 +88,7 @@ def get_product_by_name(name: str, db: Session = Depends(get_db), page: int = 0,
         }
     except Exception as e:
         print(f"Error fetching products: {e}")
-        return {"error": "Error fetching products"}
+        return JSONResponse(status_code=500, content={"error": "Error fetching products"})
 
 @app.get("/products_id/{id}", response_model=schemas.ProductModel)
 def get_product_by_id(id: int, db: Session = Depends(get_db)):
@@ -99,7 +97,7 @@ def get_product_by_id(id: int, db: Session = Depends(get_db)):
         return product
     except Exception as e:
         print(f"Error fetching product: {e}")
-        return {"error": "Error fetching product"}
+        return JSONResponse(status_code=500, content={"error": "Error fetching products"})
 thread = threading.Thread(target=crud.fetch_root_periodically)
 thread.daemon = True
 thread.start()

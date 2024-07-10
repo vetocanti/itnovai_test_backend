@@ -13,7 +13,7 @@ def get_products_by_pages(db: Session, page: int, limit:int):
 def get_products_by_category(db: Session, category_id: int, page: int, limit: int):
     if page <= 0:
         page = 1
-    return db.query(models.Product).filter(models.Product.category_id == category_id).offset((page-1)*limit).limit(limit).all()
+    return db.query(models.Product).filter(models.Product.category_id == category_id).offset((page-1)*limit).limit(limit)
 
 def get_categories(db: Session):
     return db.query(models.Category).all()
@@ -31,8 +31,9 @@ def get_total_products_count(db: Session):
     return query
 
 def get_total_products_count_by_category(db: Session, category_id: int):
-    query = db.query.count(models.Product.filter(models.Product.category_id == category_id))
+    query = db.query(models.Product).filter(models.Product.category_id == category_id).count()
     return query
+
 def get_total_products_count_by_name(db: Session, name: str):
     sql_query = text("SELECT COUNT(*) FROM product WHERE name LIKE :name")
     result = db.execute(sql_query, {'name': f'%{name}%'}).scalar()
