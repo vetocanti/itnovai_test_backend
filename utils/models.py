@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from . import database
+from utils import database
 
 
 class Product(database.Base):
