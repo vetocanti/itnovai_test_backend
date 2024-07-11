@@ -59,7 +59,7 @@ fastapi dev main.py
 ```
 ### Get all the categories of the products
 ```http
-GET /products_id/:id
+  GET /products_id/:id
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
