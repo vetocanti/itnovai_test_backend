@@ -24,11 +24,8 @@ fastapi dev main.py
 ```
 
 | Parameter | Type     | Description                |
-
 | :-------- | :------- | :------------------------- |
-
 | `page` | `int` | **Optional**. page number of the product paginator by limit |
-
 | `limit` | `int` | **Optional**. Amount of products by limit|
 
 
@@ -39,7 +36,6 @@ fastapi dev main.py
 ```
 
 | Parameter | Type     | Description                |
-
 | :-------- | :------- | :------------------------- |
 | `page` | `int` | **Optional**. page number of the product paginator by limit |
 | `limit` | `int` | **Optional**. Amount of products by limit|
