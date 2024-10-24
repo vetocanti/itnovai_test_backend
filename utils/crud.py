@@ -4,6 +4,7 @@ from utils import models
 import time
 import requests
 from utils import config
+from utils import schemas
 
 def get_products_by_pages(db: Session, page: int, limit:int):
     if(page<=0):
@@ -47,3 +48,34 @@ def fetch_root_periodically():
         except Exception as e:
             print(f"Error fetching root: {e}")
         time.sleep(180)  # Espera 3 minutos
+
+def create_category(db: Session, name: str):
+    # Usamos una sentencia SQL para insertar la categoría
+    sql_query = text("INSERT INTO category (name) VALUES(:name)")
+    db.execute(sql_query, {'name': name})
+    db.commit()  # Importante para guardar los cambios en la base de datos
+    
+    # Recuperar la categoría creada
+    new_category = db.execute(text("SELECT * FROM category WHERE name = :name"), {'name': name}).fetchone()
+    
+    return new_category
+
+def create_product(db: Session, product_request: schemas.CreateProductRequest):
+    # Usamos una sentencia SQL para insertar el producto
+    sql_query = text("""
+        INSERT INTO product (name, price, url_image, category_id, discount)
+        VALUES (:name, :price, :url_image, :category_id, :discount)
+    """)
+    db.execute(sql_query, {
+        'name': product_request.name,
+        'price': product_request.price,
+        'url_image': product_request.url_image,
+        'category_id': product_request.category_id,
+        'discount': product_request.discount
+    })
+    db.commit()  # Importante para guardar los cambios en la base de datos
+    
+    # Recuperar el producto creado
+    new_product = db.execute(text("SELECT * FROM product WHERE name = :name"), {'name': product_request.name}).fetchone()
+    
+    return new_product

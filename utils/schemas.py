@@ -33,3 +33,13 @@ class ProductResponseModel(BaseModel):
 
 class ErrorResponseModel(BaseModel):
     error: str
+
+class CreateCategoryRequest(BaseModel):
+    name: str
+
+class CreateProductRequest(BaseModel): 
+    name: str
+    price: float
+    url_image: str = None
+    category_id: int
+    discount: int

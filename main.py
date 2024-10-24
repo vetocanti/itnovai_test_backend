@@ -100,3 +100,35 @@ def get_product_by_id(id: int, db: Session = Depends(get_db)):
 thread = threading.Thread(target=crud.fetch_root_periodically)
 thread.daemon = True
 thread.start()
+
+@app.post("/products", response_model=schemas.ProductModel)  # Asegúrate de tener un modelo de respuesta definido
+async def create_new_product(product_request: schemas.CreateProductRequest, db: Session = Depends(get_db)):
+    # Verificar si ya existe un producto con el mismo nombre
+    #existing_product = db.query(models.Product).filter(models.Product.name == product_request.name).first()
+    #if existing_product:
+    #    raise HTTPException(status_code=400, detail="Product already exists")
+
+    # Crear el nuevo producto
+    new_product = crud.create_product(db, product_request)
+
+    if not new_product:
+        raise HTTPException(status_code=500, detail="Error creating product")
+
+    # Retornar el producto creado
+    return new_product
+
+@app.post("/categories", response_model=schemas.CategoryModel)
+async def create_new_category(category_request: schemas.CreateCategoryRequest, db: Session = Depends(get_db)):
+    # Verificar si ya existe una categoría con el mismo nombre
+    existing_category = db.query(models.Category).filter(models.Category.name == category_request.name).first()
+    if existing_category:
+        raise HTTPException(status_code=400, detail="Category already exists")
+
+    # Crear la nueva categoría
+    new_category = crud.create_category(db, category_request.name)
+
+    if not new_category:
+        raise HTTPException(status_code=500, detail="Error creating category")
+
+    # Retornar la categoría creada
+    return new_category
