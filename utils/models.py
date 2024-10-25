@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
-
 from utils import database
 
 
@@ -12,7 +11,7 @@ class Product(database.Base):
     price = Column(Float)
     discount = Column(Integer)
     url_image = Column(String)
-    category_id = Column(Integer, ForeignKey("category.id"), name="category")
+    category_id = Column(Integer, ForeignKey("category.id"), name="category_id")
     category = relationship("Category", back_populates="products")
 
 class Category(database.Base):
