@@ -6,7 +6,7 @@ from utils import config
 
 sqlalchemyDatabseUrl = config.Settings().database_url
 engine = create_engine(
-    sqlalchemyDatabseUrl
+    sqlalchemyDatabseUrl, connect_args={"ssl": {"ssl_ca": "ca.pem"}}
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
