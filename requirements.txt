@@ -5,3 +5,7 @@ pydantic
 python-dotenv
 uvicorn
 mysqlclient
+cloudinary
+bcrypt
+jwt
+pillow
